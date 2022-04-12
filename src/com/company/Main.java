@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
+    // Две мапы - из частей строк в строки и из строк в части.
+    // Часть строки задается строкой и положением в родительской строке.
     public static Map<Tuple<String, Integer>, List<String>> partialToOriginal = new HashMap<>();
     public static Map<String, List<Tuple<String, Integer>>> originalToPartial = new HashMap<>();
+    // Сюда будем собирать группы
     public static List<Set<String>> groups = new ArrayList<>();
+    // А здесь отслеживать посещенные ноды (части строк)
     public static Set<Tuple<String, Integer>> visitedParts = new HashSet<>();
 
     public static void readFile(String path) {
@@ -56,6 +60,9 @@ public class Main {
         }
     }
 
+    // Суть алгоритма - начиная с какой-то части строки обходим все строки, ее содержащую.
+    // У каждой родительской строки берем части и повторяем алгоритм.
+    // По сути делаем поиск компонент связности в графе.
     public static void traverseGraph(Tuple<String, Integer> node, int groupNumber) { // DFS with extra steps :)
         visitedParts.add(node);
         for (String line : partialToOriginal.get(node)) {
