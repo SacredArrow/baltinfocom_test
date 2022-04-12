@@ -106,6 +106,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        processFile("./lng.csv");
+        processFile(args[0]);
     }
 }
