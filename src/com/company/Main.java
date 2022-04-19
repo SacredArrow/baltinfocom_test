@@ -40,19 +40,21 @@ public class Main {
                 if (!ok) continue;
 
                 List<Tuple<String, Integer>> tuples = new ArrayList<>();
-                for (int i = 0; i < parts.length; i++) {
-                    String part = parts[i];
-                    Tuple<String, Integer> key = new Tuple<>(part, i);
-                    if (!part.equals("") && !originalToPartial.containsKey(line)) { // Убираем дубликаты таким образом
-                        if (!partialToOriginal.containsKey(key)) {
-                            partialToOriginal.put(key, new ArrayList<>());
-                        }
-                        partialToOriginal.get(key).add(line);
-                        tuples.add(key);
+                if (!originalToPartial.containsKey(line)) { // Убираем дубликаты таким образом
+                    for (int i = 0; i < parts.length; i++) {
+                        String part = parts[i];
+                        Tuple<String, Integer> key = new Tuple<>(part, i);
+                        if (!part.equals("")) {
+                            if (!partialToOriginal.containsKey(key)) {
+                                partialToOriginal.put(key, new ArrayList<>());
+                            }
+                            partialToOriginal.get(key).add(line);
+                            tuples.add(key);
 
+                        }
                     }
+                    originalToPartial.put(line, tuples);
                 }
-                originalToPartial.put(line, tuples);
             }
         } catch (IOException e) {
             System.out.println("Error while reading a file!");
